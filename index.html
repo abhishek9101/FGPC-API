@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Dummy Data</title>
+</head>
+<body>
+  <h1>Manage Dummy Data</h1>
+
+  <!-- Form to add new photo -->
+  <h2>Add New Photo</h2>
+  <form id="addPhotoForm">
+    <label for="photoUrl">Photo URL:</label><br>
+    <input type="text" id="photoUrl" name="photoUrl" required><br>
+    <label for="caption">Caption:</label><br>
+    <input type="text" id="caption" name="caption" required><br><br>
+    <button type="submit">Add Photo</button>
+  </form>
+
+  <!-- Form to update existing photo -->
+  <h2>Update Photo</h2>
+  <form id="updatePhotoForm">
+    <label for="updatePhotoId">Photo ID to Update:</label><br>
+    <input type="number" id="updatePhotoId" name="updatePhotoId" required><br>
+    <label for="updatePhotoUrl">New Photo URL:</label><br>
+    <input type="text" id="updatePhotoUrl" name="updatePhotoUrl" required><br>
+    <label for="updateCaption">New Caption:</label><br>
+    <input type="text" id="updateCaption" name="updateCaption" required><br><br>
+    <button type="submit">Update Photo</button>
+  </form>
+
+  <!-- Form to add new text -->
+  <h2>Add New Text</h2>
+  <form id="addTextForm">
+    <label for="textContent">Text Content:</label><br>
+    <textarea id="textContent" name="textContent" rows="4" cols="50" required></textarea><br><br>
+    <button type="submit">Add Text</button>
+  </form>
+
+  <!-- Form to update existing text -->
+  <h2>Update Text</h2>
+  <form id="updateTextForm">
+    <label for="updateTextId">Text ID to Update:</label><br>
+    <input type="number" id="updateTextId" name="updateTextId" required><br>
+    <label for="updateContent">New Text Content:</label><br>
+    <textarea id="updateContent" name="updateContent" rows="4" cols="50" required></textarea><br><br>
+    <button type="submit">Update Text</button>
+  </form>
+
+  <!-- Form to add new link -->
+  <h2>Add New Link</h2>
+  <form id="addLinkForm">
+    <label for="linkType">Link Type:</label><br>
+    <input type="text" id="linkType" name="linkType" required><br>
+    <label for="linkUrl">Link URL:</label><br>
+    <input type="text" id="linkUrl" name="linkUrl" required><br><br>
+    <button type="submit">Add Link</button>
+  </form>
+
+  <!-- Form to update existing link -->
+  <h2>Update Link</h2>
+  <form id="updateLinkForm">
+    <label for="updateLinkId">Link ID to Update:</label><br>
+    <input type="number" id="updateLinkId" name="updateLinkId" required><br>
+    <label for="updateLinkType">New Link Type:</label><br>
+    <input type="text" id="updateLinkType" name="updateLinkType" required><br>
+    <label for="updateLinkUrl">New Link URL:</label><br>
+    <input type="text" id="updateLinkUrl" name="updateLinkUrl" required><br><br>
+    <button type="submit">Update Link</button>
+  </form>
+
+  <!-- Scripts to handle form submissions -->
+  <script>
+    // Function to handle form submissions for adding a new photo
+    document.getElementById('addPhotoForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const photoUrl = document.getElementById('photoUrl').value;
+      const caption = document.getElementById('caption').value;
+      fetch('http://localhost:3000/api/photos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url: photoUrl, caption })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Photo added successfully!');
+        document.getElementById('addPhotoForm').reset();
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
+    // Function to handle form submissions for updating an existing photo
+    document.getElementById('updatePhotoForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const photoId = document.getElementById('updatePhotoId').value;
+      const photoUrl = document.getElementById('updatePhotoUrl').value;
+      const caption = document.getElementById('updateCaption').value;
+      fetch(`http://localhost:3000/api/photos/${photoId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url: photoUrl, caption })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Photo updated successfully!');
+        document.getElementById('updatePhotoForm').reset();
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
+    // Function to handle form submissions for adding a new text
+    document.getElementById('addTextForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const content = document.getElementById('textContent').value;
+      fetch('http://localhost:3000/api/texts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Text added successfully!');
+        document.getElementById('addTextForm').reset();
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
+    // Function to handle form submissions for updating an existing text
+    document.getElementById('updateTextForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const textId = document.getElementById('updateTextId').value;
+      const content = document.getElementById('updateContent').value;
+      fetch(`http://localhost:3000/api/texts/${textId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Text updated successfully!');
+        document.getElementById('updateTextForm').reset();
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
+    // Function to handle form submissions for adding a new link
+    document.getElementById('addLinkForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const type = document.getElementById('linkType').value;
+      const url = document.getElementById('linkUrl').value;
+      fetch('http://localhost:3000/api/links', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ type, url })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Link added successfully!');
+        document.getElementById('addLinkForm').reset();
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
+    // Function to handle form submissions for updating an existing link
+    document.getElementById('updateLinkForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const linkId = document.getElementById('updateLinkId').value;
+      const type = document.getElementById('updateLinkType').value;
+      const url = document.getElementById('updateLinkUrl').value;
+      fetch(`http://localhost:3000/api/links/${linkId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ type, url })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Link updated successfully!');
+        document.getElementById('updateLinkForm').reset();
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
